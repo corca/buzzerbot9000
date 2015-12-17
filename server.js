@@ -17,17 +17,15 @@ console.log('Starting...');
 app.get('/sms', twilio.webhook(), function (request, response) {
     console.log(request.query);
 
-    var sms = request.query;
+    var sms = request.query,
+        twil_res = new twilio.TwimlResponse();
 
     buzzer.open_door(sms.Body, sms.From, function (message) {
-        var twil_res = new twilio.TwimlResponse();
-
         twil_res.message(message || "???");
-        console.log('"' + message + '"', sms.Body, sms.From);
-
-        response.send(twil_res);
+        console.log(message, sms.Body, sms.From, message);
     });
 
+    response.send(twil_res);
 });
 
 var port = Number(config.port);
